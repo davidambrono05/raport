@@ -1,0 +1,54 @@
+{
+  "rules": [
+    {
+      "id": "notify-work-created",
+      "templateId": "work_item_created",
+      "trigger": "work_item_created",
+      "channel": "whatsapp",
+      "frequency": { "type": "immediate" },
+      "enabled": true
+    },
+    {
+      "id": "notify-work-completed",
+      "templateId": "work_item_completed",
+      "trigger": "work_item_completed",
+      "channel": "whatsapp",
+      "frequency": { "type": "immediate" },
+      "enabled": true
+    },
+    {
+      "id": "notify-invoice-sent",
+      "templateId": "invoice_sent",
+      "trigger": "invoice_sent",
+      "channel": "email",
+      "frequency": { "type": "immediate" },
+      "enabled": true
+    },
+    {
+      "id": "notify-payment-overdue",
+      "templateId": "payment_overdue",
+      "trigger": "payment_overdue",
+      "channel": "both",
+      "frequency": { "type": "daily", "hour": 9 },
+      "enabled": true
+    }
+  ],
+  "reports": [
+    {
+      "id": "weekly-summary",
+      "name": "Raport săptămânal",
+      "frequency": "weekly",
+      "format": "excel",
+      "recipientEmails": ["admin@electroservice.ro"],
+      "enabled": true
+    },
+    {
+      "id": "monthly-summary",
+      "name": "Raport lunar",
+      "frequency": "monthly",
+      "format": "pdf",
+      "recipientEmails": ["admin@electroservice.ro"],
+      "enabled": true
+    }
+  ]
+}

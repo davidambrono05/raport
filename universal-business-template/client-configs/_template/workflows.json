@@ -1,0 +1,22 @@
+{
+  "workItemLabel": "Lucrare",
+  "workItemLabelPlural": "Lucrări",
+  "statuses": [
+    { "id": "new",         "label": "Nou",       "color": "#64748b" },
+    { "id": "in_progress", "label": "În curs",   "color": "#d97706" },
+    { "id": "completed",   "label": "Finalizat", "color": "#16a34a", "isFinal": true },
+    { "id": "cancelled",   "label": "Anulat",    "color": "#ef4444", "isFinal": true }
+  ],
+  "transitions": [
+    { "from": "new",         "to": ["in_progress", "cancelled"] },
+    { "from": "in_progress", "to": ["completed",   "cancelled"] }
+  ],
+  "fields": [
+    { "id": "title",          "label": "Titlu",            "type": "text",     "required": true },
+    { "id": "description",    "label": "Descriere",        "type": "textarea" },
+    { "id": "scheduled_date", "label": "Data programată",  "type": "date" },
+    { "id": "location",       "label": "Locație",          "type": "text" },
+    { "id": "priority",       "label": "Prioritate",       "type": "select",
+      "options": ["scăzută", "medie", "înaltă", "urgentă"] }
+  ]
+}

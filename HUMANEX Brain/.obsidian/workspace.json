@@ -1,0 +1,230 @@
+{
+  "main": {
+    "id": "cf61cac35a8531e4",
+    "type": "split",
+    "children": [
+      {
+        "id": "0155301de5c64a5e",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "96157a3832a9f3d9",
+            "type": "leaf",
+            "state": {
+              "type": "graph",
+              "state": {},
+              "icon": "lucide-git-fork",
+              "title": "Graph view"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "44eb5561e03751c2",
+    "type": "split",
+    "children": [
+      {
+        "id": "95a5551f384b8a8d",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "9910957dcb1e928d",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "296669e797a1f86e",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "a06e93619d34aeb3",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "5b5568bd551db7d2",
+    "type": "split",
+    "children": [
+      {
+        "id": "5c710dd9a5e68c2b",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "c08271620ad6fe77",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks"
+            }
+          },
+          {
+            "id": "f9f498d6651ea96a",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links"
+            }
+          },
+          {
+            "id": "a2761a9234d2a476",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "2b1538dd3126a623",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "All properties"
+            }
+          },
+          {
+            "id": "d6a28eba214362ed",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline"
+            }
+          },
+          {
+            "id": "a2f4ca8124f2b3d1",
+            "type": "leaf",
+            "state": {
+              "type": "copilot-chat-view",
+              "state": {},
+              "icon": "message-square",
+              "title": "Copilot"
+            }
+          }
+        ],
+        "currentTab": 5
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "bases:Create new base": false,
+      "copilot:Open Copilot Chat": false
+    }
+  },
+  "active": "96157a3832a9f3d9",
+  "lastOpenFiles": [
+    "RULES.md.md",
+    "MEMORY.md.txt",
+    "New Text Document.txt",
+    "MEMORY.md/RULES.md.md",
+    "MEMORY/RULES.md.md",
+    "MEMORY/MEMORY.md.md",
+    "MEMORY",
+    "MEMORY.md/MEMORY.md.md",
+    "MEMORY.md/MMEMORY.md.md",
+    "HUMANEX_ECHIPA.md/Core/CONTEXT_CLAUDE.md.md",
+    "MEMORY.md",
+    "New folder",
+    "copilot/copilot-conversations/Găsire_Folder_Vault_Calculator@20260428_131322.md",
+    "copilot/copilot-conversations/Creare_Vault_Nou@20260427_225711.md",
+    "Untitled.canvas",
+    "Untitled.base",
+    "Untitled",
+    "HUMANEX_ECHIPA.md/Core/HUMANEX_SPRINT.md",
+    "HUMANEX_ECHIPA.md/Core/HUMANEX_BRAIN.md",
+    "copilot/copilot-conversations/Identitate_și_Proiectul_HUMANEX@20260427_213435.md",
+    "copilot/copilot-conversations",
+    "copilot/copilot-custom-prompts/Clip Web Page.md",
+    "copilot/copilot-custom-prompts/Clip YouTube Transcript.md",
+    "copilot/copilot-custom-prompts/Rewrite as tweet thread.md",
+    "copilot/copilot-custom-prompts/Rewrite as tweet.md",
+    "copilot/copilot-custom-prompts/Remove URLs.md",
+    "copilot/copilot-custom-prompts/Generate glossary.md",
+    "copilot/copilot-custom-prompts/Generate table of contents.md",
+    "copilot/copilot-custom-prompts/Make longer.md",
+    "copilot/copilot-custom-prompts/Make shorter.md",
+    "copilot/copilot-custom-prompts/Emojify.md",
+    "copilot/copilot-custom-prompts/Explain like I am 5.md",
+    "copilot/copilot-custom-prompts/Simplify.md",
+    "copilot/copilot-custom-prompts/Summarize.md",
+    "copilot/copilot-custom-prompts",
+    "copilot",
+    "Agentie AI"
+  ]
+}

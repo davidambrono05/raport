@@ -1,0 +1,35 @@
+{
+  "tenantId": "TENANT_ID",
+  "companyName": "Numele Firmei SRL",
+  "tagline": "Slogan optional",
+  "logoUrl": "/assets/logo.png",
+  "faviconUrl": "/assets/favicon.ico",
+  "colors": {
+    "primary": "#2563eb",
+    "primaryForeground": "#ffffff",
+    "secondary": "#f1f5f9",
+    "secondaryForeground": "#0f172a",
+    "accent": "#f1f5f9",
+    "accentForeground": "#0f172a",
+    "background": "#ffffff",
+    "foreground": "#0f172a",
+    "muted": "#f1f5f9",
+    "mutedForeground": "#64748b",
+    "border": "#e2e8f0",
+    "destructive": "#ef4444"
+  },
+  "typography": {
+    "fontFamily": "Inter, system-ui, sans-serif"
+  },
+  "contact": {
+    "phone": "07XX XXX XXX",
+    "email": "contact@firma.ro",
+    "address": "Oraș, România",
+    "website": "https://firma.ro"
+  },
+  "social": {
+    "facebook": "https://facebook.com/firma",
+    "instagram": "https://instagram.com/firma",
+    "whatsapp": "07XX XXX XXX"
+  }
+}

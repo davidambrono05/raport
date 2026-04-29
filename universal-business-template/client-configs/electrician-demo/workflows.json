@@ -1,0 +1,25 @@
+{
+  "workItemLabel": "Lucrare",
+  "workItemLabelPlural": "Lucrări",
+  "statuses": [
+    { "id": "new",         "label": "Nou",              "color": "#64748b" },
+    { "id": "scheduled",   "label": "Programat",        "color": "#2563eb" },
+    { "id": "in_progress", "label": "În execuție",      "color": "#d97706" },
+    { "id": "completed",   "label": "Finalizat",        "color": "#16a34a", "isFinal": true },
+    { "id": "cancelled",   "label": "Anulat",           "color": "#ef4444", "isFinal": true }
+  ],
+  "transitions": [
+    { "from": "new",         "to": ["scheduled",   "cancelled"] },
+    { "from": "scheduled",   "to": ["in_progress", "cancelled"] },
+    { "from": "in_progress", "to": ["completed",   "cancelled"] }
+  ],
+  "fields": [
+    { "id": "title",          "label": "Denumire lucrare",  "type": "text",     "required": true },
+    { "id": "location",       "label": "Adresa obiectiv",   "type": "text",     "required": true },
+    { "id": "description",    "label": "Descriere",         "type": "textarea" },
+    { "id": "scheduled_date", "label": "Data programată",   "type": "date" },
+    { "id": "estimated_hours","label": "Ore estimate",      "type": "number" },
+    { "id": "priority",       "label": "Prioritate",        "type": "select",
+      "options": ["scăzută", "medie", "înaltă", "urgentă"] }
+  ]
+}

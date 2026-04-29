@@ -1,0 +1,24 @@
+{
+  "tenantId": "electrician-demo",
+  "companyName": "ElectroService SRL",
+  "tagline": "Instalații electrice profesionale",
+  "colors": {
+    "primary": "#f59e0b",
+    "primaryForeground": "#0f172a",
+    "secondary": "#fef3c7",
+    "secondaryForeground": "#0f172a",
+    "accent": "#fef3c7",
+    "accentForeground": "#0f172a"
+  },
+  "typography": {
+    "fontFamily": "Inter, system-ui, sans-serif"
+  },
+  "contact": {
+    "phone": "0723 000 000",
+    "email": "contact@electroservice.ro",
+    "address": "Bacău, România"
+  },
+  "social": {
+    "facebook": "https://facebook.com/electroservice"
+  }
+}

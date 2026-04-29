@@ -1,0 +1,29 @@
+[
+  {
+    "pluginId": "smartbill",
+    "enabled": false,
+    "config": {
+      "apiKey": "YOUR_SMARTBILL_API_KEY",
+      "email": "contact@firma.ro",
+      "companyVatCode": "RO12345678"
+    }
+  },
+  {
+    "pluginId": "whatsapp",
+    "enabled": false,
+    "config": {
+      "provider": "twilio",
+      "accountSid": "YOUR_TWILIO_ACCOUNT_SID",
+      "authToken": "YOUR_TWILIO_AUTH_TOKEN",
+      "fromNumber": "+40700000000"
+    }
+  },
+  {
+    "pluginId": "email",
+    "enabled": false,
+    "config": {
+      "apiKey": "YOUR_RESEND_API_KEY",
+      "defaultFrom": "noreply@firma.ro"
+    }
+  }
+]

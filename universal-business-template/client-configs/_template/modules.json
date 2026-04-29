@@ -1,0 +1,9 @@
+{
+  "dashboard": true,
+  "crm": true,
+  "workItems": true,
+  "teams": true,
+  "payments": true,
+  "reports": true,
+  "invoicing": false
+}

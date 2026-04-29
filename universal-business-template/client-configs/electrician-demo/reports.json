@@ -1,0 +1,20 @@
+{
+  "reports": [
+    {
+      "id": "weekly-summary",
+      "name": "Raport săptămânal",
+      "frequency": "weekly",
+      "format": "excel",
+      "recipientEmails": ["admin@electroservice.ro"],
+      "enabled": true
+    },
+    {
+      "id": "monthly-summary",
+      "name": "Raport lunar",
+      "frequency": "monthly",
+      "format": "pdf",
+      "recipientEmails": ["admin@electroservice.ro"],
+      "enabled": true
+    }
+  ]
+}
