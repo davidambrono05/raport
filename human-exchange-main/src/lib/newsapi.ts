@@ -14,43 +14,45 @@ export type NewsArticle = {
   intensity: number; // -1.0 to +1.0, deterministic
 };
 
-const POSITIVE_WORDS = [
-  "win", "wins", "winner", "record", "award", "success", "growth",
-  "best", "top", "great", "amazing", "breakthrough", "achievement",
-  "deal", "profit", "launch", "praised", "historic", "milestone",
-  "champion", "victory", "celebrates", "gains", "rises", "leads",
-  "partnership", "iconic", "legend", "inspired", "honored",
-  "superstar", "greatest", "loved", "signs", "joins",
-  "final", "reach", "reaches", "qualifies", "through", "advances",
-  "dominates", "scores", "goal", "hat-trick", "trophy", "titles",
-  "impact", "thrives", "major", "return", "comeback", "brilliant",
+// --- HARD NEGATIVE PHRASES (3 pts, highest priority) ---
+const hardNegative = [
+  "shoot and kill", "orders military", "calls him a traitor",
+  "fraud case", "under arrest", "indicted", "convicted", "guilty",
+  "scandal", "abuse", "violence", "attack", "sexual assault",
+  "ban", "suspended", "expelled", "fired", "sacked",
+  "lawsuit", "sued", "allegations", "accused of", "charged with",
+  "bubble burst", "trophyless", "relegated", "fired",
+  "injury", "injured", "hamstring", "torn", "surgery", "cancer",
+  "gets into feud", "calls for resignation", "protests against",
+  "overrated", "washed up", "declining", "controversy",
+  "backlash", "criticised", "slammed", "blasted",
+  "sentenced to", "prison", "jail", "arrested",
+  "found dead", "dies", "death", "killed", "shot",
+  "tax evasion", "money laundering", "corruption", "bribery",
+  "affair", "mistress", "caught cheating", "divorce",
+  "bankrupt", "bankruptcy", "debt", "loses fortune",
+  "flop", "disaster", "humiliated", "shameful",
+];
+
+// --- HARD POSITIVE PHRASES (3 pts) ---
+const hardPositive = [
   "acquittal", "acquitted", "cleared", "innocent", "vindicated",
-  "boosts", "boosting", "hopes", "shines", "defies", "overcomes",
-  "selected", "chosen", "nominated", "praised", "lauded",
+  "wins title", "wins trophy", "breaks record", "new record",
+  "champions league", "world cup winner", "gold medal", "olympic",
+  "signs deal", "new contract", "partnership", "billion dollar",
+  "reaches final", "qualifies", "advances", "elected",
+  "makes history", "historic win", "milestone", "first ever",
+  "comeback", "return to form", "comeback trail",
+  "boosting hopes", "opens door", "shines for",
+  "defies age", "inspires", "praised", "lauded",
+  "billion", "billionaire", "richest", "fortune",
+  "awarded", "honored", "knighted", "hall of fame",
+  "saves", "rescues", "donates", "charity", "philanthropy",
+  "marries", "wedding", "new baby", "baby born",
+  "promoted", "appoints", "hired", "joins top",
 ];
 
-const NEGATIVE_WORDS = [
-  "loss", "loses", "scandal", "arrest", "fired", "controversy",
-  "lawsuit", "accused", "banned", "crash", "fail", "worst",
-  "drama", "conflict", "suspended", "allegations", "backlash",
-  "drops", "falls", "criticised", "investigated", "fined",
-  "retire", "retiring", "quit", "leaving", "sacked", "injured", "injury",
-  "divorce", "cheating", "fraud", "corrupt", "shame", "slammed",
-  "trophyless", "concern", "doubt", "crisis", "flop", "failure",
-  "disappoints", "struggles", "rejected", "dropped", "benched",
-  "questions", "questions his", "not at the level", "past his prime",
-  "overrated", "washed", "declining", "poor form", "out of form",
-];
-
-const POSITIVE_PHRASES = [
-  "reach final", "reaches final", "wins title", "breaks record",
-  "signs deal", "major deal", "new contract", "comeback",
-  "champions league", "world cup", "golden ball", "best player",
-  "makes history", "historic win", "cleared of", "acquitted of",
-  "upholds acquittal", "court rules in favor", "opens door",
-  "boosting hopes", "shines for", "defies age", "back to form",
-];
-
+// --- SOFT NEGATIVE PHRASES (2 pts) ---
 const NEGATIVE_PHRASES = [
   "bubble burst", "trophyless spell", "made it hard",
   "concern over", "doubt about", "crisis at", "set to leave",
@@ -58,69 +60,94 @@ const NEGATIVE_PHRASES = [
   "not at the level", "questions his presence", "questions neymar",
   "past his prime", "fraud case", "court case", "legal trouble",
   "without him", "world cup door", "hamstring", "out of form",
+  "underperforming", "poor results", "criticized", "under fire",
+  "controversial statement", "apologizes for", "backlash over",
+  "loses bid", "failed to", "misses out", "dropped from",
+  "trade request", "wants out", "unhappy at", "clashes with",
 ];
 
-// --- FRAZE NEGATIVE CLARE (cel mai mare priority) ---
-const hardNegative = [
-  "shoot and kill", "orders military", "calls him a traitor", "cooling on",
-  "fraud case", "under arrest", "indicted", "convicted", "guilty",
-  "scandal", "abuse", "violence", "attack", "ban", "suspended",
-  "lawsuit", "sued", "allegations", "accused of", "charged with",
-  "not at the level", "questions his presence", "past his prime",
-  "bubble burst", "trophyless", "relegated", "sacked", "fired",
-  "crash", "injury", "injured", "hamstring", "torn", "surgery",
-  "gets into feud", "calls for resignation", "protests against",
-  "overrated", "washed up", "declining", "controversy",
-  "backlash", "criticised", "slammed", "blasted",
-  "keeps quiet", "makes it hard", "without him",
+// --- SOFT POSITIVE PHRASES (2 pts) ---
+const POSITIVE_PHRASES = [
+  "reach final", "reaches final", "wins title", "breaks record",
+  "signs deal", "major deal", "new contract", "comeback",
+  "champions league", "world cup", "golden ball", "best player",
+  "makes history", "historic win", "cleared of", "acquitted of",
+  "upholds acquittal", "court rules in favor", "opens door",
+  "boosting hopes", "shines for", "defies age", "back to form",
+  "top performer", "leading the way", "sets record", "clinches",
+  "secures spot", "qualifies for", "advances to", "moves to",
+  "agrees to", "signs new", "extends contract", "renewal",
+  "donates to", "raises money", "helps children", "saves lives",
 ];
 
-// --- FRAZE POZITIVE CLARE ---
-const hardPositive = [
-  "acquittal", "acquitted", "cleared", "innocent", "vindicated",
-  "wins title", "wins trophy", "breaks record", "new record",
-  "champions league", "world cup winner", "gold medal",
-  "signs deal", "new contract", "partnership",
-  "reaches final", "qualifies", "advances",
-  "makes history", "historic win", "milestone",
-  "comeback", "return to form", "comeback trail",
-  "boosting hopes", "opens door", "shines for",
-  "defies age", "inspires", "praised",
-  "billion", "billionaire", "richest",
-];
-
-// --- CUVINTE POZITIVE cu greutate ---
-const posWords = [
-  "win", "wins", "winner", "won", "victory", "champion", "championship",
-  "award", "prize", "trophy", "medal", "title",
-  "record", "best", "greatest", "legend", "iconic",
-  "success", "achievement", "milestone", "breakthrough",
-  "praised", "honored", "celebrated", "loved",
-  "deal", "launch", "signs", "joins", "leads",
-  "goal", "hat-trick", "scores", "dominates",
-  "thriving", "rising", "growing", "healthy",
-  "selected", "chosen", "nominated", "appointed",
-  "support", "fans", "popular", "trending",
-  "profit", "revenue", "growth", "surge",
-];
-
-// --- CUVINTE NEGATIVE cu greutate ---
+// --- WEIGHTED NEGATIVE WORDS (1 pt) ---
 const negWords = [
-  "loss", "lose", "loses", "lost", "defeat", "eliminated",
-  "fail", "failure", "flop", "disappoints", "disappointing",
-  "crisis", "trouble", "problem", "issue", "concern",
-  "retire", "retiring", "quit", "leaving", "departure",
-  "divorce", "split", "separation", "cheating",
-  "drop", "drops", "fell", "falls", "decline",
-  "struggle", "struggles", "struggling", "difficult",
-  "worry", "fears", "doubt", "uncertain",
-  "miss", "misses", "absent", "benched", "dropped",
-  "quiet", "silent", "refuses", "avoids",
-  "feud", "fight", "clash", "conflict", "dispute",
+  "loss", "loses", "losing", "lost", "defeat", "eliminated", "beaten",
+  "fail", "fails", "failed", "failure", "flop", "flops", "flopped",
+  "disappoints", "disappointing", "disappointed", "disappointment",
+  "crisis", "trouble", "problem", "issue", "concern", "concerns",
+  "retire", "retiring", "retired", "quit", "quitting", "leaving",
+  "divorce", "split", "separation", "cheating", "affair",
+  "drop", "drops", "dropped", "fell", "fallen", "falling", "decline",
+  "struggle", "struggles", "struggling", "difficult", "terrible",
+  "worry", "fears", "doubt", "uncertain", "unsure",
+  "miss", "misses", "missed", "absent", "injured", "suspended",
+  "quiet", "silent", "refuses", "avoids", "ignores",
+  "feud", "fight", "clash", "conflict", "dispute", "argument",
+  "scandal", "controversy", "backlash", "criticised", "slammed",
+  "banned", "fined", "punished", "sanctioned",
+  "lawsuit", "sued", "accused", "allegations",
+  "fired", "sacked", "replaced", "dropped",
+  "poor", "bad", "terrible", "horrible", "awful",
+  "overrated", "washed", "washed up", "declining", "past prime",
+  "weak", "injury", "injuries", "hamstring", "surgery",
+  // politics/business
+  "resigns", "resigned", "resignation", "ousted", "removed",
+  "bankrupt", "bankruptcy", "debt", "losses", "losing money",
+  "scandal", "investigation", "indicted", "trial", "convicted",
+];
+
+// --- WEIGHTED POSITIVE WORDS (1 pt) ---
+const posWords = [
+  "win", "wins", "winner", "won", "victory", "victories", "champion",
+  "championship", "champions", "trophy", "trophies", "title", "titles",
+  "record", "records", "best", "greatest", "legend", "legendary", "iconic",
+  "success", "successful", "achievement", "achievements", "milestone",
+  "breakthrough", "breakthroughs", "praised", "honored", "celebrated",
+  "loved", "popular", "admired", "respected",
+  "deal", "deals", "signs", "signed", "joins", "leads", "leading",
+  "goal", "goals", "scores", "scored", "hat-trick", "dominates",
+  "thriving", "rising", "growing", "healthy", "strong", "improving",
+  "selected", "chosen", "nominated", "appointed", "elected",
+  "support", "fans", "popular", "trending", "trending up",
+  "profit", "profits", "revenue", "growth", "growing", "surge",
+  "star", "superstar", "hero", "inspiration", "inspires",
+  "brilliant", "outstanding", "exceptional", "remarkable",
+  "return", "comeback", "recovered", "recovery",
+  "donates", "charity", "philanthropy", "generous",
+  "marries", "married", "wedding", "baby", "born",
+  "promoted", "promotion", "hired", "appointed", "elected",
+  "saves", "rescues", "helps", "supported",
+  // politics/business
+  "elected", "reelected", "wins election", "victory", "landslide",
+  "passed", "approves", "signed bill", "new law", "reform",
+  "profit", "record profit", "stock rises", "shares up", "market cap",
+  "expansion", "hires", "grows", "acquires", "merger",
+  "innovation", "innovative", " breakthrough", "disrupting",
 ];
 
 // Calculeaza scorul raw pentru un text dat (titlu sau description)
 // acumuleaza puncte pe baza frazelor si cuvintelor gasite
+function wordMatches(word: string, list: string[]): boolean {
+  // Verifica daca cuvantul sau radacina lui e in lista
+  if (list.includes(word)) return true;
+  // Verifica daca incepe cu un cuvant din lista (winning → win, loser → lose)
+  for (const entry of list) {
+    if (word.startsWith(entry) && word.length <= entry.length + 4) return true;
+  }
+  return false;
+}
+
 function scoreText(text: string): number {
   const lower = text.toLowerCase();
   let raw = 0;
@@ -148,11 +175,11 @@ function scoreText(text: string): number {
     const prev = words[i - 1]?.replace(/[^a-z]/g, "") ?? "";
     const isNegated = ["not", "no", "never", "without", "despite", "but"].includes(prev);
 
-    if (posWords.includes(word)) {
+    if (wordMatches(word, posWords)) {
       if (isNegated) raw -= 1.5;
       else raw += 1;
     }
-    if (negWords.includes(word)) {
+    if (wordMatches(word, negWords)) {
       if (isNegated) raw += 0.5;
       else raw -= 1;
     }
@@ -195,7 +222,7 @@ export async function fetchNewsForPersonality(name: string): Promise<NewsArticle
     const results = await Promise.allSettled(
       queries.map(async (q) => {
         const googleRss = `https://news.google.com/rss/search?q=${encodeURIComponent(q)}&hl=en-US&gl=US&ceid=US:en`;
-        const url = `${RSS2JSON_BASE}?rss_url=${encodeURIComponent(googleRss)}&count=10`;
+        const url = `${RSS2JSON_BASE}?rss_url=${encodeURIComponent(googleRss)}${RSS2JSON_API_KEY ? `&api_key=${RSS2JSON_API_KEY}&count=10` : ""}`;
         const res = await fetch(url, { signal: AbortSignal.timeout(8000) });
         if (!res.ok) return [];
         const data = await res.json();
