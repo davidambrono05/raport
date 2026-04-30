@@ -7,10 +7,9 @@ export type TrendsData = {
   trend: "rising" | "stable" | "falling";
 };
 
-// Impact continuu: scor 50 = 0%, scor 100 = +1.5%, scor 0 = -1.5%
-// Inlocuieste zona moarta anterioara (30-70 = 0)
+// Impact continuu: scor 50 = 0%, scor 100 = +1.0%, scor 0 = -1.0%
 export function trendsImpact(interestScore: number): number {
-  return +((interestScore - 50) / 50 * 1.5).toFixed(2);
+  return +((interestScore - 50) / 50).toFixed(2);
 }
 
 // Scor de interes determinist bazat pe Wikipedia pageviews

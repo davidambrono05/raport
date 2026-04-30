@@ -18,10 +18,10 @@ export type PriceMovement = {
   sources: string[];
 };
 
-// Calculeaza impactul din Wikipedia
+// Calculeaza impactul din Wikipedia (-1.0 la +1.0)
 function wikipediaImpact(pageviewsChange: number): number {
-  const impact = (pageviewsChange / 50) * 0.4;
-  return Math.max(-0.4, Math.min(0.4, impact));
+  const impact = pageviewsChange / 50;
+  return Math.max(-1, Math.min(1, impact));
 }
 
 // Calculeaza impactul din stiri
@@ -78,13 +78,13 @@ export async function calculatePriceMovement(
   let gTrendsImpact = 0;
   try {
     const trendsData = await fetchInterestScore(personalityName, wikiPageviews);
-    gTrendsImpact = trendsImpact(trendsData.interestScore) * 0.3;
+    gTrendsImpact = trendsImpact(trendsData.interestScore);
     if (Math.abs(gTrendsImpact) > 0.1) {
       sources.push(`Interest: ${trendsData.interestScore}/100 (${trendsData.trend})`);
     }
   } catch { gTrendsImpact = 0; }
 
-  // 4. Mean reversion (20%) — cel mai important pentru stabilitate
+  // 4. Mean reversion (20%) — trage pretul spre media recenta
   let reversionImpact = 0;
   try {
     const { data: p } = await supabase
@@ -95,16 +95,16 @@ export async function calculatePriceMovement(
 
     if (p?.current_price) {
       const price = Number(p.current_price);
-      // Preturi initiale aproximative per personalitate
-      const initialPrice = 450;
+      // Media calculata ca 80% din pretul actual (trend-ul recent)
+      const baseline = price * 0.8;
 
-      if (price > initialPrice * 1.2) {
-        // Pret prea mare — scade
-        reversionImpact = -((price - initialPrice * 1.2) / initialPrice) * 0.8;
+      if (price > baseline * 1.15) {
+        // Pret peste 115% din baseline — corectie
+        reversionImpact = -((price - baseline) / price) * 1.5;
         sources.push(`Market correction: overvalued`);
-      } else if (price < initialPrice * 0.8) {
-        // Pret prea mic — creste
-        reversionImpact = ((initialPrice * 0.8 - price) / initialPrice) * 0.8;
+      } else if (price < baseline * 0.85) {
+        // Pret sub 85% din baseline — recuperare
+        reversionImpact = ((baseline - price) / price) * 1.5;
         sources.push(`Market recovery: undervalued`);
       }
     }
@@ -125,9 +125,8 @@ export async function calculatePriceMovement(
     breakdown: {
       news: +nImpact.toFixed(2),
       wikipedia: +wikiImpact.toFixed(2),
-      youtube: +reversionImpact.toFixed(2),
-      base: 0,
       trends: +gTrendsImpact.toFixed(2),
+      reversion: +reversionImpact.toFixed(2),
     },
     sources,
   };

@@ -14,8 +14,13 @@ type YTResponse = {
   error?: { message?: string };
 };
 
-function rand(min: number, max: number) {
-  return Math.random() * (max - min) + min;
+// Deterministic impact based on subscriber growth percentage
+function growthToImpact(growthPct: number): number {
+  // growthPct > 0.5% → up to +5% price; growthPct < 0 → down to -3% price
+  if (growthPct > 5) return 5;
+  if (growthPct > 0.5) return growthPct * 0.8;
+  if (growthPct >= 0) return growthPct * 0.3;
+  return Math.max(-3, growthPct * 0.5);
 }
 
 export const Route = createFileRoute("/api/public/hooks/update-prices")({
@@ -83,13 +88,7 @@ export const Route = createFileRoute("/api/public/hooks/update-prices")({
           if (p.last_subscriber_count && p.last_subscriber_count > 0) {
             const growthPct = ((subs - p.last_subscriber_count) / p.last_subscriber_count) * 100;
 
-            if (growthPct > 0.5) {
-              pricePct = rand(3, 7);
-            } else if (growthPct >= 0) {
-              pricePct = rand(0, 3);
-            } else {
-              pricePct = -rand(1, 4);
-            }
+            pricePct = growthToImpact(growthPct);
           }
           // else: first observation — only seed last_subscriber_count, no price change
 
