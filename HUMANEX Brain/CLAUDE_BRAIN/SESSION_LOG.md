@@ -302,4 +302,31 @@ electrician-report/
 **Starea proiectelor HUMANEX (pentru sesiunea viitoare):**
 - `human-exchange-main` — 80% gata, trade/securitate gata, blocat la deploy (nevoie de secrets în Wrangler/Vercel)
 - `universal-business-template` — 80% gata, build curat, integrările nu sunt conectate la UI
-- `electrician-report` — ✅ FORMULAR COMPLET (2026-05-05), gata de deploy Vercel maine
+## 2026-05-18 — Hermes Agent Onboarding + Git Infrastructure + Agency Architecture
+
+**Completat (by Hermes Agent, fără David):**
+- ✅ `gh` (GitHub CLI) instalat în WSL — așteaptă autentificare de la David
+- ✅ Skill Hermes creat: `agency-orchestrator` — documentează cum orchestrez Claude Code + Hermes + cron
+- ✅ Skill Hermes actualizat: `ai-agency-architecture` — arhitectură pe 4 layere
+- ✅ `SOUL.md` actualizat — persona CTO/AI Operations Architect
+- ✅ `.gitignore` global + repo curățat — node_modules, .env, .claude out
+- ✅ `AGENCY_ARCHITECTURE.md` scris în CLAUDE_BRAIN — arhitectură completă + roadmap Q2-Q4
+- ✅ Git commit: 214 files, mesaj "chore: clean tracked files, add .gitignore, update architecture"
+- ✅ Memorie Hermes actualizată — profil David deduplicat și complet
+- ✅ Diagnostic complet: infrastructură, proiecte, gap-uri, plan 30 zile
+
+**În progres (blocat, așteaptă David):**
+- 🔴 Autentificare `gh` — David trebuie să introducă codul `1E4E-CF50` pe https://github.com/login/device
+- 🔴 Push monorepo HUMANEX pe GitHub (davidambrono05/humanex)
+- 🔴 Push universal-business-template pe GitHub (separat de monorepo?)
+- ⏳ Deploy HUMANEX pe Cloudflare Workers — lipsesc secretele
+
+**Blocker identificat:**
+- electrician-report directorul nu mai există pe disk (doar în SESSION_LOG)
+- n8n CLI neinstalat, Shopify neconfigurat, Obsidian vault există în HUMANEX Brain/.obsidian/ dar n-are conținut structurat
+
+**Decizii luate:**
+- HUMANEX rămâne monorepo cu human-exchange-main + universal-business-template + client-electrician-system
+- humanex-agency și sistem final (raport) au propriile repo-uri GitHub și deploy-uri separate
+- Hermes Agent orchestrează, Claude Code execută cod — diviziunea muncii clară
+- Li se oferă utilizatorului să seteze o organizație GitHub HUMANEX
