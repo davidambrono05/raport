@@ -27,6 +27,52 @@
 
 ---
 
+## Proiectul 2 — Sistem Gestiune Firmă Electrician
+**Ce este:** Sistem complet automatizat pentru o firmă de instalații electrice
+**Concept:** De la crearea lucrării până la încasarea banilor, fără intervenție manuală
+**Status:** 80% gata, build-ul trece curat
+
+**Stack:** React 19 + TanStack Start, Supabase, TypeScript, Tailwind CSS 4, shadcn/ui
+**Path:** `C:\Users\david\Documents\HUMANEX\universal-business-template\`
+**Deploy target:** Cloudflare Workers (wrangler.jsonc configurat)
+
+**Flow complet automat:**
+```
+Create Job → Notify Team (WhatsApp) → Notify Client → Upload Field Photos
+→ Mark Complete → Auto-Generate Invoice (SmartBill) → Send Invoice
+→ Track Payment → Send Reminders (auto) → Monthly Reports
+```
+
+**Module implementate:**
+- ✅ Dashboard cu KPI-uri reale (active_work_items, revenue, outstanding)
+- ✅ Client Management (CRUD + istoric lucrări + facturi)
+- ✅ Job Management (CRUD + status flow + field access via token)
+- ✅ Team Management (listă echipe + membri)
+- ✅ Payment Tracking (listă facturi + record payment)
+- ✅ Reports (UI gata, export Excel/PDF)
+
+**Integrări implementate (cod complet):**
+- ✅ SmartBill API (`src/integrations/smartbill/index.ts`)
+- ✅ WhatsApp API - WATI/Twilio (`src/integrations/whatsapp/index.ts`)
+- ✅ Resend Email (`src/integrations/email/index.ts`)
+
+**Infrastructură completă:**
+- ✅ Auth system (login/signup cu tenant_id)
+- ✅ TanStack Router (toate rutele: dashboard, clients, jobs, teams, invoices, reports)
+- ✅ Supabase clients (browser + server + types + query functions)
+- ✅ Server functions (`api/invoice.ts`, `api/field-update.ts`)
+- ✅ Build-ul trece: ✓ 1964 module client + ✓ 2020 module SSR
+
+**Ce lipsește (pentru maine):**
+- 🔄 Conectarea integrărilor la UI (click handlers pentru SmartBill, WhatsApp, Resend)
+- 🔄 Field access page (`/field/$token`) pentru șefii de echipă
+- 🔄 Job detail page cu upload poze + status history
+- 🔄 Reports cu generare efectivă + export
+- 🔄 Branding system aplicat (colors din `client-configs/`)
+- 🔄 Deploy pe Cloudflare Workers (`npx wrangler deploy`)
+
+---
+
 ## Echipa AI
 **Claude.ai** — eu, strategia și coordonarea (această conversație)
 **Claude Code** — execuție cod, 59 agenți instalați

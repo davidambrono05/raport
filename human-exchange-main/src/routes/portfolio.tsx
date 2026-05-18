@@ -1,8 +1,19 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth";
 import { formatHmx, formatPct } from "@/lib/format";
+
+type HoldingRow = {
+  id: string;
+  shares: number;
+  avg_cost: number;
+  personality: { id: string; slug: string; name: string; category: string; current_price: number };
+};
+
+type PortfolioData = {
+  balance: number;
+  holdings: HoldingRow[];
+};
 
 export const Route = createFileRoute("/portfolio")({
   head: () => ({
@@ -14,55 +25,44 @@ export const Route = createFileRoute("/portfolio")({
   component: PortfolioPage,
 });
 
-type HoldingRow = {
-  id: string;
-  shares: number;
-  avg_cost: number;
-  personality: { id: string; slug: string; name: string; category: string; current_price: number };
-};
-
 function PortfolioPage() {
-  const { user, loading: authLoading } = useAuth();
-  const navigate = useNavigate();
-  const [holdings, setHoldings] = useState<HoldingRow[] | null>(null);
-  const [balance, setBalance] = useState(0);
+  const { user, session, loading: authLoading } = useAuth();
+  const [data, setData] = useState<PortfolioData | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!authLoading && !user) navigate({ to: "/auth" });
-  }, [user, authLoading, navigate]);
+    if (!authLoading && !user) {
+      window.location.href = "/auth";
+    }
+  }, [user, authLoading]);
 
   useEffect(() => {
-    if (!user) return;
+    if (!user || !session) return;
     let mounted = true;
-    (async () => {
-      const { data: prof } = await supabase.from("profiles").select("balance").eq("id", user.id).single();
-      if (prof && mounted) setBalance(Number(prof.balance));
 
-      const { data } = await supabase
-        .from("holdings")
-        .select("id, shares, avg_cost, personality:personalities(id,slug,name,category,current_price)")
-        .eq("user_id", user.id);
-      if (mounted) {
-        setHoldings(
-          (data ?? []).map((h) => {
-            const joined = h.personality as { id: string; slug: string; name: string; category: string; current_price: number | string };
-            return {
-              id: h.id,
-              shares: Number(h.shares),
-              avg_cost: Number(h.avg_cost),
-              personality: { ...joined, current_price: Number(joined.current_price) },
-            };
-          })
-        );
+    (async () => {
+      try {
+        const res = await fetch("/api/portfolio", {
+          headers: { "Authorization": "Bearer " + (session.access_token ?? "") },
+        });
+        const result = await res.json();
+        if (!res.ok) throw new Error(result.error ?? "Failed");
+        if (mounted) setData(result);
+      } catch (e) {
+        console.error("Portfolio load error:", e);
+      } finally {
+        if (mounted) setLoading(false);
       }
     })();
-    return () => { mounted = false; };
-  }, [user]);
 
-  if (authLoading || !user || !holdings) {
+    return () => { mounted = false; };
+  }, [user, session]);
+
+  if (authLoading || !user || loading || !data) {
     return <main className="mx-auto max-w-7xl px-4 py-12"><div className="h-64 animate-pulse rounded-xl bg-surface" /></main>;
   }
 
+  const { balance, holdings } = data;
   const investedValue = holdings.reduce((s, h) => s + h.shares * h.personality.current_price, 0);
   const costBasis = holdings.reduce((s, h) => s + h.shares * h.avg_cost, 0);
   const pl = investedValue - costBasis;

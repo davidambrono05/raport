@@ -11,7 +11,7 @@ import { fetchNewsForPersonality, type NewsArticle } from "@/lib/newsapi";
 import { fetchWikipediaData, formatViews, type WikipediaData } from "@/lib/wikipedia";
 import { filterNewArticles, calculateNewsImpact, applyNewsImpact } from "@/lib/newsProcessor";
 import { calculateReputationScore, type ReputationScore } from "@/lib/reputationScore";
-import { applyDailyPriceUpdate, isPriceUpdatedToday } from "@/lib/dailyPrice";
+// dailyPrice.ts eliminated — price updates are now server-side via /api/daily-price-update
 import { fetchAndSaveNews } from "@/lib/newsHistory";
 
 export const Route = createFileRoute("/p/$slug")({
@@ -107,9 +107,18 @@ function ProfilePage() {
     setReputation(repScore);
     setLoadingNews(false);
 
-    // Calculeaza si aplica actualizarea ZILNICA a pretului
+    // Aplica actualizarea ZILNICA a pretului via server API
     try {
-      const update = await applyDailyPriceUpdate(p.id, repScore, personality.current_price);
+      const { data: { session } } = await supabase.auth.getSession();
+      const res = await fetch("/api/daily-price-update", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + (session?.access_token ?? ""),
+        },
+        body: JSON.stringify({ personality_id: p.id, score: repScore }),
+      });
+      const update = await res.json();
       setDailyUpdate(update);
 
       if (update.updated && Math.abs(update.delta) >= 0.1) {
@@ -141,9 +150,9 @@ function ProfilePage() {
 
   useEffect(() => { loadAll(); }, [loadAll]);
 
-  // Auto-refresh stiri la fiecare 5 minute — cu detectie stiri noi
+  // Auto-refresh stiri la fiecare 5 minute — cu detectie stiri noi + server-side impact
   useEffect(() => {
-    if (!pers) return;
+    if (!pers || !user) return;
     const interval = setInterval(async () => {
       const current = persRef.current;
       if (!current) return;
@@ -157,37 +166,47 @@ function ProfilePage() {
         const { delta, newArticles, sources } = calculateNewsImpact(processed);
 
         if (newArticles.length > 0 && Math.abs(delta) > 0.01) {
-          // Aplica impactul stirilor noi
-          await applyNewsImpact(current.id, delta);
-          setLastNewsImpact({ delta, sources });
+          // Aplica impactul stirilor noi via server API (nu din browser)
+          const { data: { session } } = await supabase.auth.getSession();
+          const res = await fetch("/api/news-impact", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": "Bearer " + (session?.access_token ?? ""),
+            },
+            body: JSON.stringify({ personality_id: current.id, delta }),
+          });
 
-          // Reincarca pretul
-          const { data: updated } = await supabase
-            .from("personalities")
-            .select("current_price,change_pct")
-            .eq("id", current.id)
-            .maybeSingle();
+          if (res.ok) {
+            setLastNewsImpact({ delta, sources });
 
-          if (updated) {
-            const newPers = {
-              ...current,
-              current_price: Number(updated.current_price),
-              change_pct: Number(updated.change_pct),
-            };
-            setPers(newPers);
-            persRef.current = newPers;
+            // Reincarca pretul
+            const { data: updated } = await supabase
+              .from("personalities")
+              .select("current_price,change_pct")
+              .eq("id", current.id)
+              .maybeSingle();
 
-            // Notifica utilizatorul
-            toast(
-              `${delta > 0 ? "📈" : "📉"} ${current.name}: ${delta > 0 ? "+" : ""}${delta.toFixed(2)}% din stiri noi`,
-              { duration: 4000 }
-            );
+            if (updated) {
+              const newPers = {
+                ...current,
+                current_price: Number(updated.current_price),
+                change_pct: Number(updated.change_pct),
+              };
+              setPers(newPers);
+              persRef.current = newPers;
+
+              toast(
+                `${delta > 0 ? "📈" : "📉"} ${current.name}: ${delta > 0 ? "+" : ""}${delta.toFixed(2)}% din stiri noi`,
+                { duration: 4000 }
+              );
+            }
           }
         }
       } catch { /* esec silentios */ }
     }, 5 * 60 * 1000);
     return () => clearInterval(interval);
-  }, [pers]);
+  }, [pers, user]);
 
   if (notFound) {
     return (

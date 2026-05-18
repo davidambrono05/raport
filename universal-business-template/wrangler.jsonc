@@ -1,0 +1,13 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "universal-business-template",
+  "compatibility_date": "2025-09-24",
+  "compatibility_flags": ["nodejs_compat"],
+
+  // NOTE: "main" here is used by @lovable.dev/vite-tanstack-config as the build entry point.
+  // DO NOT run `wrangler deploy` from the project root — it will fail.
+  // The correct deploy command is:
+  //   npm run build && npx wrangler deploy --config dist/server/wrangler.json
+  // The build output in dist/server/wrangler.json has the correct "main": "index.js".
+  "main": "@tanstack/react-start/server-entry",
+}

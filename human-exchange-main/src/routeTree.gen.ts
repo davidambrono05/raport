@@ -15,6 +15,9 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as PSlugRouteImport } from './routes/p.$slug'
 import { Route as ApiTradeRouteImport } from './routes/api/trade'
+import { Route as ApiPortfolioRouteImport } from './routes/api/portfolio'
+import { Route as ApiNewsImpactRouteImport } from './routes/api/news-impact'
+import { Route as ApiDailyPriceUpdateRouteImport } from './routes/api/daily-price-update'
 import { Route as ApiPublicHooksUpdatePricesRouteImport } from './routes/api/public/hooks/update-prices'
 
 const PortfolioRoute = PortfolioRouteImport.update({
@@ -47,6 +50,21 @@ const ApiTradeRoute = ApiTradeRouteImport.update({
   path: '/api/trade',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPortfolioRoute = ApiPortfolioRouteImport.update({
+  id: '/api/portfolio',
+  path: '/api/portfolio',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiNewsImpactRoute = ApiNewsImpactRouteImport.update({
+  id: '/api/news-impact',
+  path: '/api/news-impact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiDailyPriceUpdateRoute = ApiDailyPriceUpdateRouteImport.update({
+  id: '/api/daily-price-update',
+  path: '/api/daily-price-update',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicHooksUpdatePricesRoute =
   ApiPublicHooksUpdatePricesRouteImport.update({
     id: '/api/public/hooks/update-prices',
@@ -59,6 +77,9 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/leaderboard': typeof LeaderboardRoute
   '/portfolio': typeof PortfolioRoute
+  '/api/daily-price-update': typeof ApiDailyPriceUpdateRoute
+  '/api/news-impact': typeof ApiNewsImpactRoute
+  '/api/portfolio': typeof ApiPortfolioRoute
   '/api/trade': typeof ApiTradeRoute
   '/p/$slug': typeof PSlugRoute
   '/api/public/hooks/update-prices': typeof ApiPublicHooksUpdatePricesRoute
@@ -68,6 +89,9 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/leaderboard': typeof LeaderboardRoute
   '/portfolio': typeof PortfolioRoute
+  '/api/daily-price-update': typeof ApiDailyPriceUpdateRoute
+  '/api/news-impact': typeof ApiNewsImpactRoute
+  '/api/portfolio': typeof ApiPortfolioRoute
   '/api/trade': typeof ApiTradeRoute
   '/p/$slug': typeof PSlugRoute
   '/api/public/hooks/update-prices': typeof ApiPublicHooksUpdatePricesRoute
@@ -78,6 +102,9 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/leaderboard': typeof LeaderboardRoute
   '/portfolio': typeof PortfolioRoute
+  '/api/daily-price-update': typeof ApiDailyPriceUpdateRoute
+  '/api/news-impact': typeof ApiNewsImpactRoute
+  '/api/portfolio': typeof ApiPortfolioRoute
   '/api/trade': typeof ApiTradeRoute
   '/p/$slug': typeof PSlugRoute
   '/api/public/hooks/update-prices': typeof ApiPublicHooksUpdatePricesRoute
@@ -89,6 +116,9 @@ export interface FileRouteTypes {
     | '/auth'
     | '/leaderboard'
     | '/portfolio'
+    | '/api/daily-price-update'
+    | '/api/news-impact'
+    | '/api/portfolio'
     | '/api/trade'
     | '/p/$slug'
     | '/api/public/hooks/update-prices'
@@ -98,6 +128,9 @@ export interface FileRouteTypes {
     | '/auth'
     | '/leaderboard'
     | '/portfolio'
+    | '/api/daily-price-update'
+    | '/api/news-impact'
+    | '/api/portfolio'
     | '/api/trade'
     | '/p/$slug'
     | '/api/public/hooks/update-prices'
@@ -107,6 +140,9 @@ export interface FileRouteTypes {
     | '/auth'
     | '/leaderboard'
     | '/portfolio'
+    | '/api/daily-price-update'
+    | '/api/news-impact'
+    | '/api/portfolio'
     | '/api/trade'
     | '/p/$slug'
     | '/api/public/hooks/update-prices'
@@ -117,6 +153,9 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   LeaderboardRoute: typeof LeaderboardRoute
   PortfolioRoute: typeof PortfolioRoute
+  ApiDailyPriceUpdateRoute: typeof ApiDailyPriceUpdateRoute
+  ApiNewsImpactRoute: typeof ApiNewsImpactRoute
+  ApiPortfolioRoute: typeof ApiPortfolioRoute
   ApiTradeRoute: typeof ApiTradeRoute
   PSlugRoute: typeof PSlugRoute
   ApiPublicHooksUpdatePricesRoute: typeof ApiPublicHooksUpdatePricesRoute
@@ -166,6 +205,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiTradeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/portfolio': {
+      id: '/api/portfolio'
+      path: '/api/portfolio'
+      fullPath: '/api/portfolio'
+      preLoaderRoute: typeof ApiPortfolioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/news-impact': {
+      id: '/api/news-impact'
+      path: '/api/news-impact'
+      fullPath: '/api/news-impact'
+      preLoaderRoute: typeof ApiNewsImpactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/daily-price-update': {
+      id: '/api/daily-price-update'
+      path: '/api/daily-price-update'
+      fullPath: '/api/daily-price-update'
+      preLoaderRoute: typeof ApiDailyPriceUpdateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/hooks/update-prices': {
       id: '/api/public/hooks/update-prices'
       path: '/api/public/hooks/update-prices'
@@ -181,6 +241,9 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   LeaderboardRoute: LeaderboardRoute,
   PortfolioRoute: PortfolioRoute,
+  ApiDailyPriceUpdateRoute: ApiDailyPriceUpdateRoute,
+  ApiNewsImpactRoute: ApiNewsImpactRoute,
+  ApiPortfolioRoute: ApiPortfolioRoute,
   ApiTradeRoute: ApiTradeRoute,
   PSlugRoute: PSlugRoute,
   ApiPublicHooksUpdatePricesRoute: ApiPublicHooksUpdatePricesRoute,

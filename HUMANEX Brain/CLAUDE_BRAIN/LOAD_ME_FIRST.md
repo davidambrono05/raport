@@ -20,6 +20,23 @@ Prețurile se mișcă zilnic bazat pe Human Reality Score (News 50% + Interest 3
 **Stack:** React 19 + TanStack Start · Supabase (yhnvzcrdwofqndqxvjjb) · TypeScript · Tailwind CSS 4  
 **Cod:** `C:\Users\david\Documents\HUMANEX\human-exchange-main\`
 
+---
+
+## Proiectul 2 — Sistem Gestiune Firmă Electrician
+Sistem complet automatizat pentru o firmă de instalații electrice. Web app cu flow complet: de la crearea lucrării până la încasarea banilor.
+
+**Stack:** React 19 + TanStack Start · Supabase · TypeScript · Tailwind CSS 4 · shadcn/ui  
+**Cod:** `C:\Users\david\Documents\HUMANEX\universal-business-template\`  
+**Status:** 80% gata, build-ul trece curat (✓ 1964 module client + ✓ 2020 SSR)
+
+**Flow:** Create Job → Notify → Upload Photos → Mark Complete → Auto Invoice (SmartBill) → Track Payment → Reports
+
+**Module gata:** Dashboard, Clients, Jobs, Teams, Invoices, Reports + Auth system complet  
+**Integrări gata:** SmartBill API, WhatsApp (WATI/Twilio), Resend Email  
+**Deploy:** Cloudflare Workers (wrangler.jsonc configurat)  
+
+**Ce lipsește (maine):** conectare integrări la UI, field access page, branding aplicat, deploy
+
 ## Status Curent
 | Prioritate | Task | Status |
 |-----------|------|--------|

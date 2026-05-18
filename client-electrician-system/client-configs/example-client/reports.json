@@ -1,0 +1,28 @@
+{
+  "reports": [
+    {
+      "id": "monthly-work",
+      "name": "Raport Lunar — Lucrări",
+      "frequency": "monthly",
+      "format": "pdf",
+      "recipientEmails": ["admin@electroservice.ro"],
+      "enabled": true
+    },
+    {
+      "id": "monthly-invoicing",
+      "name": "Raport Lunar — Facturare",
+      "frequency": "monthly",
+      "format": "excel",
+      "recipientEmails": ["admin@electroservice.ro"],
+      "enabled": true
+    },
+    {
+      "id": "overdue-report",
+      "name": "Stoc Clienți Restanțieri",
+      "frequency": "manual",
+      "format": "pdf",
+      "recipientEmails": ["admin@electroservice.ro"],
+      "enabled": true
+    }
+  ]
+}

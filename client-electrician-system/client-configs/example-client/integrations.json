@@ -1,0 +1,29 @@
+[
+  {
+    "pluginId": "smartbill",
+    "enabled": false,
+    "config": {
+      "apiKey": "your_smartbill_api_key",
+      "email": "your_smartbill_email",
+      "companyVatCode": "RO12345678"
+    }
+  },
+  {
+    "pluginId": "whatsapp",
+    "enabled": false,
+    "config": {
+      "provider": "twilio",
+      "accountSid": "your_twilio_account_sid",
+      "authToken": "your_twilio_auth_token",
+      "fromNumber": "+1234567890"
+    }
+  },
+  {
+    "pluginId": "email",
+    "enabled": false,
+    "config": {
+      "apiKey": "your_resend_api_key",
+      "defaultFrom": "noreply@electroservice.ro"
+    }
+  }
+]

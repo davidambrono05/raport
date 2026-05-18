@@ -1,0 +1,163 @@
+# CONTEXT SISTEM ELECTRICIAN ⚡ (FĂRĂ LOGIN)
+
+## Scop
+
+Construim un sistem simplu și profesional pentru o firmă de electricieni unde:
+
+* șeful de echipă introduce zilnic raportul
+* patronul primește automat email cu raportul
+* totul este rapid și fără login
+
+---
+
+## Ce este deja implementat
+
+### Backend
+
+* Supabase configurat
+* Tabel: `daily_reports`
+
+### Coloane:
+
+* project_name (text)
+* materials_used (text)
+* operations_done (text)
+* notes (text)
+* equipment_used (text, optional)
+* equipment_hours (number, optional)
+* report_date (date)
+
+---
+
+### Automatizare (n8n)
+
+Workflow complet:
+
+1. Schedule Trigger (ora 18:00)
+2. HTTP Request → Supabase
+3. Filtrare după ziua curentă
+4. Code Node → HTML profesional
+5. Email → trimis către patron
+
+✔ Funcționează complet
+
+---
+
+## Ce trebuie construit (FOCUS)
+
+### 1. Pagina de introducere raport (FOARTE IMPORTANT)
+
+O pagină simplă (fără login) unde șeful de echipă poate completa:
+
+* Nume proiect
+* Materiale folosite
+* Operații efectuate
+* Note / observații
+* Utilaje folosite (optional)
+* Ore utilaje (optional)
+
+---
+
+## Cerințe UX (CRITIC)
+
+* Mobile-first (folosit pe telefon)
+* Foarte simplu
+* Form mare, clar
+* Buton mare: “Trimite raport”
+* Feedback după submit (ex: “Raport trimis”)
+
+---
+
+## Comportament
+
+La submit:
+
+* trimite datele în Supabase (insert)
+* setează automat:
+
+  * report_date = data curentă
+
+---
+
+## FĂRĂ LOGIN
+
+* NU folosi autentificare
+* NU folosi user system
+* NU complica flow-ul
+
+👉 pagina trebuie să fie accesibilă direct prin link
+
+---
+
+## UI / DESIGN
+
+Trebuie să arate:
+
+* modern (SaaS style)
+* curat (spacing bun)
+* culori profesionale
+* input-uri mari (pentru mobil)
+
+---
+
+## Stack
+
+* React (TanStack Router)
+* TypeScript
+* Tailwind CSS
+* Supabase client
+
+---
+
+## Structură dorită
+
+* pagină: /report
+* componentă principală: ReportForm
+* folosire hooks moderne
+* cod clar și curat
+
+---
+
+## Instrucțiuni pentru Claude Code
+
+* Scrie cod COMPLET (nu schițe)
+* Include:
+
+  * componenta React
+  * hook pentru submit
+  * integrare Supabase
+* Nu explica, doar cod
+* UX simplu > complexitate
+
+---
+
+## Prioritate absolută
+
+1. Formular funcțional
+2. Salvare în Supabase
+3. UI profesional
+4. Funcționează pe mobil perfect
+
+---
+
+## Obiectiv final
+
+Un sistem unde:
+
+1. Echipa intră pe link
+2. Completează raport în 30 sec
+3. Apasă submit
+4. Patronul primește email automat
+
+---
+
+## Notă importantă
+
+Acest sistem va fi vândut ca produs.
+
+Trebuie să fie:
+
+* simplu
+* rapid
+* fără bug-uri
+* ușor de folosit

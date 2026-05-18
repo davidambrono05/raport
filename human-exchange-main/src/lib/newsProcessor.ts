@@ -16,7 +16,13 @@ const MAX_STORED = 500; // maxim 500 de stiri stocate
 
 // Genereaza un ID unic pentru o stire bazat pe titlu si data
 function articleId(article: NewsArticle): string {
-  return btoa(article.title.slice(0, 50) + article.publishedAt).replace(/[^a-zA-Z0-9]/g, "");
+  const raw = (article.title.slice(0, 50) + article.publishedAt).toLowerCase();
+  // Hash simplu fara btoa (care nu e disponibil in SSR)
+  let hash = 0;
+  for (let i = 0; i < raw.length; i++) {
+    hash = ((hash << 5) - hash + raw.charCodeAt(i)) | 0;
+  }
+  return "a" + Math.abs(hash).toString(36);
 }
 
 // Citeste stirile procesate din localStorage

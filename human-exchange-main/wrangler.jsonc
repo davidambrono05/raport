@@ -1,8 +1,18 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "tanstack-start-app",
+  "name": "human-exchange-main",
   "compatibility_date": "2025-09-24",
   "compatibility_flags": ["nodejs_compat"],
+
+  // Local dev env vars — for production use: wrangler secret put <NAME>
+  "vars": {
+    "SUPABASE_URL": "https://yhnvzcrdwofqndqxvjjb.supabase.co",
+    "SUPABASE_PUBLISHABLE_KEY": "",
+    "SUPABASE_SERVICE_ROLE_KEY": "",
+    "WEBHOOK_SECRET": "",
+    "YOUTUBE_API_KEY": "",
+    "NVIDIA_API_KEY": ""
+  },
 
   // NOTE: "main" here is used by @lovable.dev/vite-tanstack-config as the build entry point.
   // DO NOT run `wrangler deploy` from the project root — it will fail.

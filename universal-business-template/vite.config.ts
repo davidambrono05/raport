@@ -1,13 +1,9 @@
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
-import { TanStackRouterVite } from '@tanstack/router-vite-plugin';
+import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 
 export default defineConfig({
-  plugins: [
-    TanStackRouterVite(),
-    react(),
-  ],
   define: {
-    'import.meta.env.VITE_TENANT_ID': JSON.stringify(process.env.VITE_TENANT_ID ?? 'electrician-demo'),
+    "import.meta.env.VITE_TENANT_ID": JSON.stringify(
+      process.env.VITE_TENANT_ID ?? "electrician-demo"
+    ),
   },
 });

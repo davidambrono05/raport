@@ -1,0 +1,29 @@
+{
+  "customTemplates": [],
+  "rules": [
+    {
+      "id": "notify-work-started",
+      "templateId": "work_item_started",
+      "trigger": "work_item_started",
+      "channel": "whatsapp",
+      "frequency": { "type": "immediate" },
+      "enabled": true
+    },
+    {
+      "id": "notify-invoice-sent",
+      "templateId": "invoice_sent",
+      "trigger": "invoice_sent",
+      "channel": "both",
+      "frequency": { "type": "immediate" },
+      "enabled": true
+    },
+    {
+      "id": "remind-overdue",
+      "templateId": "payment_overdue",
+      "trigger": "payment_overdue",
+      "channel": "both",
+      "frequency": { "type": "daily", "hour": 9 },
+      "enabled": true
+    }
+  ]
+}
