@@ -330,3 +330,42 @@ electrician-report/
 - humanex-agency și sistem final (raport) au propriile repo-uri GitHub și deploy-uri separate
 - Hermes Agent orchestrează, Claude Code execută cod — diviziunea muncii clară
 - Li se oferă utilizatorului să seteze o organizație GitHub HUMANEX
+
+---
+
+## 2026-05-19 — HUMANEX OS Build + Deploy Vercel + Lead Scraping
+
+**Completat:**
+- ✅ humanex-os repo creat: `davidambrono05/humanex-os` (React 19 + TanStack Router + Tailwind 4 + Supabase)
+- ✅ Claude Code a scris tot frontend-ul în execuție unică (11 fișiere, ~1900 linii de cod)
+  - Dashboard, Leads, Outreach, Clients, Pipeline, Agents, Analytics + router + librării
+- ✅ Build Vite trece curat (1MB bundle JS + 38KB CSS)
+- ✅ Deploy pe Vercel: https://humanex-os.vercel.app/dashboard (auto-deploy din GitHub main)
+- ✅ Supabase schema aplicată de David în `supabase.com/dashboard/sql`
+  - 7 tabele active: leads, outreach_campaigns, outreach_emails, agent_runs, clients, pipeline_items, analytics_events
+- ✅ `scripts/mass_scraper.py` — scraper listafirme.ro cu 12 coduri CAEN, deduplicare, scoring
+- ✅ `scripts/lead_generation.py` — curated seed data (35 firme REALE) + Google enrichment
+- ✅ 1,697 lead-uri în DB (1000 inițiali + 697 din scraping + enrichment)
+- ✅ Cron configurat: Lead Research Agent — zilnic 09:00 (Hermes cronjob)
+- ✅ Memoria actualizată în Obsidian:
+  - `MEMORY/MEMORY.md.md` — secțiune nouă Proiectul 3: HUMANEX OS
+  - `CLAUDE_BRAIN/PROJECT_SNAPSHOT.md` — secțiune nouă HUMANEX OS cu toate detalii
+  - `SESSION_LOG.md` — intrare actuală
+
+**În progres:**
+- 🟡 Outreach automat (Resend + follow-up cron) — UI gata, lipsă automatizare backend
+- 🟡 UltraMsg reactivează pentru WhatsApp outreach ($5/lună)
+- 🟡 Enrichment automat lead-uri (telefon/email din surse externe)
+- 🟡 Îmbunătățește regex scraping numeleGoogle (numele sunt prea rătăcite)
+
+**Blockers removeate:**
+- ✅ Led generation scrapperul funcționaleaza — 1,697 leads in DB
+- ✅ Build-ul trece curat
+- ✅ Vercel deploy complet
+- ✅ Inferfata Hermes cron configurata (dupa o sesiunea anteriara)
+
+**Decizii luate:**
+- Hermes continuă să fie orchestratorul, Claude Code executorul
+- Target nișă: electricieni + constructori, Bacău + Brașov (național pentru scraping)
+- Nișa principală agenție: lead generation și outreach automatizat pentru afaceri românești
+- Budget $20-30/lună — UltraMsg rămâne în Pauză până la primul client venit

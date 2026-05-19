@@ -219,3 +219,97 @@ electrician-report/
 5. n8n-ul deja configurat va trimite automat email către patron la ora 18:00
 
 **Notă:** n8n workflow-ul e complet și funcțional — face schedule trigger → HTTP Request Supabase → filtrează ziua curentă → Code Node HTML → Email către patron
+
+---
+
+## HUMANEX OS — Agency Operating System (2026-05-19)
+**Path:** `C:\Users\david\Documents\HUMANEX\humanex-os\`
+**GitHub:** https://github.com/davidambrono05/humanex-os
+**Live:** https://humanex-os.vercel.app/dashboard  ← VERCEL AUTO-DEPLOY DIN GITHUB
+**Status:** ✅ LIVE — build curat, module scrise complet, în activă dezvoltare
+**Ultima actualizare:** 2026-05-19
+
+**Ce este:** Dashboard centralizat pentru agenția HUMANEX — toate operațiunile dintr-un singur loc.
+
+**Stack:** React 19 + TanStack Router + Tailwind 4 + Supabase + Resend
+**Build:** ✓ curat (1MB bundle)
+
+### Module frontend scrise complet:
+- `src/pages/Dashboard.tsx` — KPI cards + grafice (funnel lead-uri, agenți activi)
+- `src/pages/Leads.tsx` — tabel leads, filtrare status, schimbare status direct
+- `src/pages/Outreach.tsx` — campanii email + template editor + tracking
+- `src/pages/Clients.tsx` — CRM grid (active/paused/completed/churned)
+- `src/pages/Pipeline.tsx` — kanban board 6 etape
+- `src/pages/Agents.tsx` — monitor agenți AI în timp real
+- `src/pages/Analytics.tsx` — distribuție status, orașe, domenii
+
+### Tabele Supabase active:
+| Tabel | Count (2026-05-19) | Scop |
+|-------|--------|------|
+| leads | 1,697 | Lead-uri scraped/inserate automat |
+| pipeline_items | 6 | Oportunități în pipeline |
+| agent_runs | 6 | Log rulări agenți AI |
+| outreach_campaigns | 0 | Campanii email |
+| outreach_emails | 0 | Emailuri individuale |
+| clients | 0 | Clienți activi |
+
+### Scripturi Python:
+- `scripts/mass_scraper.py` — scraping listafirme.ro cu 12 coduri CAEN (4321-4941)
+- `scripts/lead_generation.py` — curated leads + Google enrichment
+
+### Cron configurate (Hermes Agent):
+| Job | Schedule | Status |
+|-----|----------|--------|
+| Lead Research Agent | Zilnic 09:00 | ✅ Activ |
+
+### Blockers actuali:
+| Prioritate | Problemă |
+|------------|---------|
+| 🔴 CRITIC | Outreach automat (Resend + follow-up cron) — UI gata, lipsă automatizare |
+| 🟡 ÎNALTĂ | Enrichment automat lead-uri (telefon/email din surse externe) |
+| 🟡 ÎNALTĂ | UltraMsg reactivează pentru WhatsApp outreach ($5/lună, instanță oprită) |
+| 🟢 MEDIE | Deploy UBT pe Cloudflare Workers |
+| 🟢 MEDIE | Primul client platitor (target septembrie 2026) |
+
+### Structură fișierelor:
+```
+humanex-os/
+├── src/
+│   ├── lib/
+│   │   ├── supabase.ts     # Client + types TypeScript
+│   │   └── utils.ts        # Helper functions + status labels/colors
+│   ├── components/
+│   │   ├── Sidebar.tsx
+│   │   ├── KPICard.tsx
+│   │   └── ui.tsx          # StatusBadge, Spinner, EmptyState
+│   ├── pages/
+│   │   ├── Dashboard.tsx
+│   │   ├── Leads.tsx
+│   │   ├── Outreach.tsx
+│   │   ├── Clients.tsx
+│   │   ├── Pipeline.tsx
+│   │   ├── Agents.tsx
+│   │   └── Analytics.tsx
+│   ├── router.tsx          # TanStack Router
+│   └── App.tsx
+├── scripts/
+│   ├── mass_scraper.py
+│   └── lead_generation.py
+├── .env                    # VITE_SUPABASE_URL + VITE_SUPABASE_ANON_KEY
+├── vercel.json
+├── vite.config.ts
+└── package.json
+```
+
+**Decizii arhitecturale:**
+- Hermes = orchestrator (plan, cron, research), Claude Code = executor (cod)
+- Lead scraping național (12 CAEN codes), nu doar local Bacău/Brașov
+- Vite menținut în toate proiectele (nu Next.js)
+- Supabase unic pentru toate proiectele (yhnvzcrdwofqndqxvjjb)
+- Budget $20-30/lună guvernează toate alegerile de tooling
+
+**Next steps:**
+1. Creează campanie email din UI → activă cron zilnic outreach
+2. Testează Resend API cu email către David
+3. Reactivează UltraMsg pentru WhatsApp outreach
+4. Îmbunătățește regex scraping (numele din Google sunt prea rătăcite)
