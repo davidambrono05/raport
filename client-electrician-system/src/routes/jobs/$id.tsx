@@ -4,7 +4,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { getWorkItem } from '@/integrations/supabase/queries/workItems';
 import type { WorkItem, WorkItemStatus } from '@/modules/workItems/types';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, Edit, Upload, CheckCircle } from 'lucide-react';
+import { ArrowLeft, MapPin, Users, Wrench, Package, ClipboardList } from 'lucide-react';
 import { Link } from '@tanstack/react-router';
 
 const STATUSES: WorkItemStatus[] = [
@@ -64,8 +64,12 @@ function JobDetail() {
     );
   }
 
-  const currentStatusConfig = STATUSES.find((s) => s.id === job.status);
+  const currentStatusConfig = STATUSES.find(s => s.id === job.status);
   const availableTransitions = getAvailableTransitions(job.status);
+  const materials = (job.materials_json || []) as any[];
+  const operations = (job.operations_json || []) as any[];
+  const materialsTotal = materials.reduce((s: number, m: any) => s + (m.quantity || 0) * (m.price_per_unit || 0), 0);
+  const operationsTotal = operations.reduce((s: number, o: any) => s + (o.quantity || 0) * (o.price || 0), 0);
 
   return (
     <div className="container mx-auto px-4 py-6 space-y-6">
@@ -81,33 +85,115 @@ function JobDetail() {
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="md:col-span-2 space-y-4">
+          {/* Detalii lucrare */}
           <div className="rounded-lg border p-4">
-            <h2 className="font-semibold mb-2">Detalii lucrare</h2>
-            <p className="text-sm text-muted-foreground mb-1">
-              {job.description || 'Fără descriere'}
-            </p>
-            <div className="grid grid-cols-2 gap-2 mt-4 text-sm">
-              <div>
-                <span className="text-muted-foreground">Client:</span>{' '}
-                <span className="text-foreground">{job.contact?.name || 'Necunoscut'}</span>
-              </div>
-              <div>
-                <span className="text-muted-foreground">Echipa:</span>{' '}
-                <span className="text-foreground">{job.team?.name || 'Nepartită'}</span>
-              </div>
-              <div>
-                <span className="text-muted-foreground">Valoare estimată:</span>{' '}
-                <span className="text-foreground">
-                  {job.estimated_value?.toFixed(2) || '0.00'} RON
-                </span>
-              </div>
-              <div>
-                <span className="text-muted-foreground">Prioritate:</span>{' '}
-                <span className="text-foreground">{job.priority}</span>
+            <h2 className="font-semibold mb-3 flex items-center gap-2">
+              <Wrench className="h-4 w-4" />
+              Detalii lucrare
+            </h2>
+            <div className="space-y-2 text-sm">
+              {job.description && (
+                <p className="text-muted-foreground">{job.description}</p>
+              )}
+              <div className="grid grid-cols-2 gap-3 mt-3">
+                <div>
+                  <span className="text-muted-foreground">Client: </span>
+                  <span className="text-foreground">{job.contact?.name || 'Necunoscut'}</span>
+                </div>
+                <div>
+                  <span className="text-muted-foreground">Prioritate: </span>
+                  <span className="text-foreground capitalize">{job.priority}</span>
+                </div>
+                {job.scheduled_start && (
+                  <div>
+                    <span className="text-muted-foreground">Data început: </span>
+                    <span className="text-foreground">{new Date(job.scheduled_start).toLocaleDateString('ro-RO')}</span>
+                  </div>
+                )}
+                {job.scheduled_end && (
+                  <div>
+                    <span className="text-muted-foreground">Data sfârșit: </span>
+                    <span className="text-foreground">{new Date(job.scheduled_end).toLocaleDateString('ro-RO')}</span>
+                  </div>
+                )}
+                {job.estimated_value != null && job.estimated_value > 0 && (
+                  <div>
+                    <span className="text-muted-foreground">Valoare estimată: </span>
+                    <span className="text-foreground font-medium">{job.estimated_value.toFixed(2)} RON</span>
+                  </div>
+                )}
               </div>
             </div>
           </div>
 
+          {/* Adresă lucru */}
+          {job.location_address && (
+            <div className="rounded-lg border p-4">
+              <h2 className="font-semibold mb-2 flex items-center gap-2">
+                <MapPin className="h-4 w-4" />
+                Adresă lucru
+              </h2>
+              <p className="text-sm text-foreground">{job.location_address}</p>
+            </div>
+          )}
+
+          {/* Materiale */}
+          {materials.length > 0 && (
+            <div className="rounded-lg border p-4">
+              <h2 className="font-semibold mb-3 flex items-center gap-2">
+                <Package className="h-4 w-4" />
+                Materiale ({materials.length})
+              </h2>
+              <div className="space-y-1">
+                {materials.map((m: any, i: number) => (
+                  <div key={i} className="flex items-center justify-between text-sm py-1 border-b last:border-0">
+                    <span>{m.material_name}</span>
+                    <span className="text-muted-foreground">
+                      {m.quantity} {m.unit} × {m.price_per_unit?.toFixed(2)} RON = <strong>{((m.quantity || 0) * (m.price_per_unit || 0)).toFixed(2)} RON</strong>
+                    </span>
+                  </div>
+                ))}
+                <div className="flex justify-between text-sm font-semibold pt-2 border-t">
+                  <span>Total materiale:</span>
+                  <span>{materialsTotal.toFixed(2)} RON</span>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Operații */}
+          {operations.length > 0 && (
+            <div className="rounded-lg border p-4">
+              <h2 className="font-semibold mb-3 flex items-center gap-2">
+                <ClipboardList className="h-4 w-4" />
+                Operații ({operations.length})
+              </h2>
+              <div className="space-y-1">
+                {operations.map((o: any, i: number) => (
+                  <div key={i} className="flex items-center justify-between text-sm py-1 border-b last:border-0">
+                    <span>{o.operation_name}</span>
+                    <span className="text-muted-foreground">
+                      {o.quantity} buc × {o.price?.toFixed(2)} RON = <strong>{((o.quantity || 0) * (o.price || 0)).toFixed(2)} RON</strong>
+                    </span>
+                  </div>
+                ))}
+                <div className="flex justify-between text-sm font-semibold pt-2 border-t">
+                  <span>Total operații:</span>
+                  <span>{operationsTotal.toFixed(2)} RON</span>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Observații */}
+          {job.notes && (
+            <div className="rounded-lg border p-4">
+              <h2 className="font-semibold mb-2">Observații</h2>
+              <p className="text-sm text-foreground whitespace-pre-wrap">{job.notes}</p>
+            </div>
+          )}
+
+          {/* Istoric status */}
           {job.work_item_status_history?.length > 0 && (
             <div className="rounded-lg border p-4">
               <h2 className="font-semibold mb-2">Istoric status</h2>
@@ -128,7 +214,9 @@ function JobDetail() {
           )}
         </div>
 
+        {/* Sidebar */}
         <div className="space-y-4">
+          {/* Status */}
           <div className="rounded-lg border p-4">
             <h2 className="font-semibold mb-3">Status</h2>
             <div
@@ -144,37 +232,90 @@ function JobDetail() {
             {availableTransitions.length > 0 && (
               <div className="mt-4 space-y-2">
                 <p className="text-sm font-medium text-foreground">Schimbă status:</p>
-                {availableTransitions.map((t) => (
+                {availableTransitions.map(t => (
                   <Button
                     key={t}
                     onClick={() => handleStatusChange(t)}
                     className="w-full"
                     variant="outline"
                   >
-                    {STATUSES.find((s) => s.id === t)?.label || t}
+                    {STATUSES.find(s => s.id === t)?.label || t}
                   </Button>
                 ))}
               </div>
             )}
           </div>
 
+          {/* Echipă */}
+          {(job.team_lead_name || job.team_member_ids?.length > 0) && (
+            <div className="rounded-lg border p-4">
+              <h2 className="font-semibold mb-3 flex items-center gap-2">
+                <Users className="h-4 w-4" />
+                Echipă
+              </h2>
+              <div className="space-y-2 text-sm">
+                {job.team_lead_name && (
+                  <div>
+                    <span className="text-muted-foreground">Șef echipă: </span>
+                    <span className="text-foreground">{job.team_lead_name}</span>
+                  </div>
+                )}
+                {job.team_member_ids?.length > 0 && (
+                  <div>
+                    <span className="text-muted-foreground">Membri: </span>
+                    <span className="text-foreground">{job.team_member_ids.length} persoane</span>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* Total */}
+          {(materialsTotal > 0 || operationsTotal > 0) && (
+            <div className="rounded-lg border p-4 bg-muted">
+              <h2 className="font-semibold mb-2">Costuri</h2>
+              <div className="space-y-1 text-sm">
+                {materialsTotal > 0 && (
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Materiale:</span>
+                    <span>{materialsTotal.toFixed(2)} RON</span>
+                  </div>
+                )}
+                {operationsTotal > 0 && (
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Operații:</span>
+                    <span>{operationsTotal.toFixed(2)} RON</span>
+                  </div>
+                )}
+                <div className="flex justify-between font-semibold pt-2 border-t">
+                  <span>Total:</span>
+                  <span>{(materialsTotal + operationsTotal).toFixed(2)} RON</span>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Poze */}
           {job.work_item_files?.length > 0 && (
             <div className="rounded-lg border p-4">
-              <h2 className="font-semibold mb-2">Poze încărcate</h2>
-              <ul className="space-y-2">
-                {job.work_item_files.map((f) => (
-                  <li key={f.id}>
-                    <a
-                      href={f.file_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-sm text-primary hover:underline"
-                    >
-                      {f.file_name}
-                    </a>
-                  </li>
+              <h2 className="font-semibold mb-2">Poze</h2>
+              <div className="grid grid-cols-2 gap-2">
+                {job.work_item_files.map(f => (
+                  <a
+                    key={f.id}
+                    href={f.file_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block"
+                  >
+                    <img
+                      src={f.file_url}
+                      alt={f.file_name || 'Poza lucrare'}
+                      className="w-full h-20 object-cover rounded border"
+                    />
+                  </a>
                 ))}
-              </ul>
+              </div>
             </div>
           )}
         </div>
