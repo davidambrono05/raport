@@ -1,7 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
-import { getContact } from '@/integrations/supabase/queries/contacts';
+import { getContactById } from '@/integrations/supabase/queries/contacts';
 import type { Contact } from '@/modules/crm/types';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, Plus } from 'lucide-react';
@@ -17,7 +17,7 @@ function ClientDetail() {
   const { data: contact, isLoading, refetch } = useQuery({
     queryKey: ['client', id],
     queryFn: async () => {
-      const result = await getContact(supabase, id);
+      const result = await getContactById(supabase, id);
       return result as unknown as Contact & {
         work_items: { id: string; title: string; status: string; estimated_value: number }[];
         invoices: { id: string; invoice_number: string; total: number; status: string }[];
