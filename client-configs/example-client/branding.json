@@ -1,0 +1,31 @@
+{
+  "companyName": "Electro Service SRL",
+  "tagline": "Instalații electrice de calitate",
+  "logoUrl": "",
+  "colors": {
+    "primary": "#2563eb",
+    "primaryForeground": "#ffffff",
+    "secondary": "#f1f5f9",
+    "secondaryForeground": "#0f172a",
+    "accent": "#f1f5f9",
+    "accentForeground": "#0f172a",
+    "background": "#ffffff",
+    "foreground": "#0f172a",
+    "muted": "#f1f5f9",
+    "mutedForeground": "#64748b",
+    "border": "#e2e8f0",
+    "destructive": "#ef4444"
+  },
+  "typography": {
+    "fontFamily": "Inter, system-ui, sans-serif"
+  },
+  "contact": {
+    "phone": "0234-567.890",
+    "email": "contact@electroservice.ro",
+    "address": "Str. Principală 123, Bacău"
+  },
+  "social": {
+    "facebook": "https://facebook.com/electroservice",
+    "instagram": "https://instagram.com/electroservice"
+  }
+}
