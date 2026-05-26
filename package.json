@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite dev",
-    "build": "vite build",
+    "build": "vite build --mode production",
     "build:dev": "vite build --mode development",
     "preview": "vite preview",
     "deploy": "vite build && wrangler deploy --config dist/server/wrangler.jsonc",
@@ -27,6 +27,7 @@
     "@tanstack/react-query": "^5.83.0",
     "@tanstack/react-router": "^1.168.0",
     "@tanstack/react-start": "^1.167.14",
+    "@tanstack/start-server-functions-handler": "^1.120.19",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
