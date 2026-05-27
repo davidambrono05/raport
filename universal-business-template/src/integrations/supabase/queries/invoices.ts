@@ -32,15 +32,16 @@ export async function getDashboardStats(
 ) {
   const { data, error } = await supabase.rpc('get_tenant_dashboard_stats');
   if (error) throw error;
-  return data?.[0] as {
-    active_work_items: number;
-    revenue_this_month: number;
-    outstanding_amount: number;
-    overdue_invoices: number;
-    urgent_work_items: number;
-    contacts_total: number;
-    generated_at: string;
-  } | undefined;
+  const raw = (Array.isArray(data) ? data[0] : data) as Record<string, unknown> | null;
+  return {
+    active_work_items: Number(raw?.active_jobs ?? raw?.active_work_items ?? 0),
+    revenue_this_month: Number(raw?.total_revenue ?? raw?.revenue_this_month ?? 0),
+    outstanding_amount: Number(raw?.outstanding_amount ?? 0),
+    overdue_invoices: Number(raw?.pending_invoices ?? raw?.overdue_invoices ?? 0),
+    urgent_work_items: Number(raw?.urgent_work_items ?? 0),
+    contacts_total: Number(raw?.total_clients ?? raw?.contacts_total ?? 0),
+    generated_at: String(raw?.generated_at ?? new Date().toISOString()),
+  };
 }
 
 export async function recordPayment(
