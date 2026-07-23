@@ -36,6 +36,8 @@ export function CreateJobDialog({ open, onClose, onSuccess }: Props) {
     location_lng: null as number | null,
     scheduled_start: '',
     scheduled_end: '',
+    work_start_time: '07:00',
+    work_end_time: '15:30',
     estimated_value: '',
     priority: 'medium' as 'low' | 'medium' | 'high' | 'urgent',
     team_lead_id: '',
@@ -122,6 +124,7 @@ export function CreateJobDialog({ open, onClose, onSuccess }: Props) {
       operation_id: operation.id,
       operation_name: operation.name,
       quantity: 1,
+      unit: 'buc',
       price: operation.default_price,
     }]);
     setOperationSearch('');
@@ -172,6 +175,8 @@ export function CreateJobDialog({ open, onClose, onSuccess }: Props) {
         contact_id: form.contact_id,
         scheduled_start: form.scheduled_start || null,
         scheduled_end: form.scheduled_end || null,
+        work_start_time: form.work_start_time || null,
+        work_end_time: form.work_end_time || null,
         estimated_value: form.estimated_value ? parseFloat(form.estimated_value) : grandTotal || null,
         priority: form.priority,
         status: 'new',
@@ -285,6 +290,27 @@ export function CreateJobDialog({ open, onClose, onSuccess }: Props) {
                     type="date"
                     value={form.scheduled_end}
                     onChange={(e) => setForm(f => ({ ...f, scheduled_end: e.target.value }))}
+                    className="mt-1 w-full rounded-md border border-input bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="text-sm font-medium">Program început</label>
+                  <input
+                    type="time"
+                    value={form.work_start_time}
+                    onChange={(e) => setForm(f => ({ ...f, work_start_time: e.target.value }))}
+                    className="mt-1 w-full rounded-md border border-input bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring"
+                  />
+                </div>
+                <div>
+                  <label className="text-sm font-medium">Program sfârșit</label>
+                  <input
+                    type="time"
+                    value={form.work_end_time}
+                    onChange={(e) => setForm(f => ({ ...f, work_end_time: e.target.value }))}
                     className="mt-1 w-full rounded-md border border-input bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring"
                   />
                 </div>
@@ -459,10 +485,16 @@ export function CreateJobDialog({ open, onClose, onSuccess }: Props) {
                           min="1"
                           step="1"
                           value={o.quantity}
-                          onChange={(e) => updateOperationQty(i, parseInt(e.target.value) || 1)}
+                          onChange={(e) => setSelectedOperations(prev => prev.map((op, idx) => idx === i ? { ...op, quantity: parseInt(e.target.value) || 1 } : op))}
                           className="w-16 rounded border px-1 py-0.5 text-xs"
                         />
-                        <span className="text-xs text-muted-foreground">buc</span>
+                        <input
+                          type="text"
+                          value={o.unit}
+                          onChange={(e) => setSelectedOperations(prev => prev.map((op, idx) => idx === i ? { ...op, unit: e.target.value } : op))}
+                          className="w-14 rounded border px-1 py-0.5 text-xs text-center"
+                          placeholder="UM"
+                        />
                         <span className="text-xs font-medium">{(o.quantity * o.price).toFixed(2)} RON</span>
                         <button type="button" onClick={() => removeOperation(i)} className="text-destructive hover:opacity-80">
                           <Trash2 className="h-3 w-3" />

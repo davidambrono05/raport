@@ -26,6 +26,7 @@ export interface WorkItemOperation {
   operation_id: string;
   operation_name: string;
   quantity: number;
+  unit: string;
   price: number;
 }
 
