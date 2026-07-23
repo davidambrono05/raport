@@ -98,6 +98,8 @@ export type Database = {
           actual_value: number | null;
           scheduled_start: string | null;
           scheduled_end: string | null;
+          work_start_time: string | null;
+          work_end_time: string | null;
           started_at: string | null;
           completed_at: string | null;
           metadata: Json;
@@ -119,6 +121,8 @@ export type Database = {
           actual_value?: number | null;
           scheduled_start?: string | null;
           scheduled_end?: string | null;
+          work_start_time?: string | null;
+          work_end_time?: string | null;
           started_at?: string | null;
           completed_at?: string | null;
           metadata?: Json;
