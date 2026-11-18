@@ -12,6 +12,9 @@
     "lint": "eslint .",
     "format": "prettier --write ."
   },
+  "engines": {
+    "node": "22.x"
+  },
   "dependencies": {
     "@clerk/clerk-react": "^5.0.0",
     "@hookform/resolvers": "^5.0.0",
