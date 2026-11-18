@@ -16,10 +16,10 @@ BEGIN
                WHERE table_schema = 'public' AND table_name = 'profiles' AND column_name = 'tenant_id') THEN
       -- aceeași firmă (tenant) ca restul personalului
       EXECUTE 'SELECT tenant_id FROM profiles WHERE tenant_id IS NOT NULL ORDER BY created_at LIMIT 1' INTO v_tenant;
-      EXECUTE 'INSERT INTO profiles (id, tenant_id, display_name, role, created_at) VALUES ($1, $2, $3, $4, now())'
+      EXECUTE 'INSERT INTO profiles (id, tenant_id, display_name, role, created_at) VALUES ($1, $2, $3, $4::user_role, now())'
         USING v_id, v_tenant, 'Mihai Andrei', 'employee';
     ELSE
-      INSERT INTO profiles (id, display_name, role, created_at) VALUES (v_id, 'Mihai Andrei', 'employee', now());
+      INSERT INTO profiles (id, display_name, role, created_at) VALUES (v_id, 'Mihai Andrei', 'employee'::user_role, now());
     END IF;
   END IF;
 
